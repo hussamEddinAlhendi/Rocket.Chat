@@ -9,6 +9,8 @@ FileUpload.CustomAPI = class FileUploadCustomAPI extends FileUploadBase {
 
 	start() {
 		var file, item, uploading;
+		var data = this.file.getAsBinary();
+		console.log(data)
 
 		file = _.pick(this.meta, 'type', 'size', 'name', 'identify', 'description');
 		file._id = this.id
