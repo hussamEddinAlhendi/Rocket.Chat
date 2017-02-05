@@ -1,32 +1,42 @@
-// I assume This is a downloadUrl for a file on the server.
-const downloadUrl = `https://devstgaccount.blob.core.windows.net/chat-storage/IMG_0925.JPG?st=2017-01-24T13%3A57%3A00Z&se=2017-01-25T13%3A57%3A00Z&sp=rl&sv=2015-12-11&sr=b&sig=LN5Qx4n8FH6TgOt5h4uylZXcTCt0jsOHjKetCE4YG6U%3D`;
+import { HTTP } from 'meteor/http'
 
+const uri = "http://stgenvwebapisite.azurewebsites.net/api/Resource/UploadChatResource"
 FileUpload.CustomAPI = class FileUploadCustomAPI extends FileUploadBase {
 	constructor(meta, file) {
 		super(meta, file);
-		console.log(this)
 	}
 
 	start() {
 		var file, item, uploading;
-		var data = this.file.getAsBinary();
-		console.log(data)
-
-		file = _.pick(this.meta, 'type', 'size', 'name', 'identify', 'description');
-		file._id = this.id
-		file.url = downloadUrl;
-
-		Meteor.call('sendFileMessage', this.meta.rid, 'API', file, () => {
-			Meteor.setTimeout(() => {
-				uploading = Session.get('uploading');
-				if (uploading !== null) {
-					item = _.findWhere(uploading, {
-						id: this.id
-					});
-					return Session.set('uploading', _.without(uploading, item));
+		var data;
+		console.log('meta', JSON.stringify(this.meta), 'file', this.file);
+		readAsDataURL(this.file, function (fileContent) {
+			HTTP.post(uri, {
+				data: {fileContent: fileContent.split(',')[1], meta: this.meta},
+				headers: {"Content-Type": "application/json"}
+			}, function (error, response) {
+				if (error) {
+					console.log(error)
+				} else {
+					console.log(response)
+					// file = _.pick(this.meta, 'type', 'size', 'name', 'identify', 'description');
+					// file._id = this.id
+					// file.url = response.url;
+                    //
+					// Meteor.call('sendFileMessage', this.meta.rid, 'API', file, () => {
+					// 	Meteor.setTimeout(() => {
+					// 		uploading = Session.get('uploading');
+					// 		if (uploading !== null) {
+					// 			item = _.findWhere(uploading, {
+					// 				id: this.id
+					// 			});
+					// 			return Session.set('uploading', _.without(uploading, item));
+					// 		}
+					// 	}, 2000);
+					// });
 				}
-			}, 2000);
-		});
+			})
+		})
 	}
 
 	onProgress() {}
@@ -34,3 +44,11 @@ FileUpload.CustomAPI = class FileUploadCustomAPI extends FileUploadBase {
 	stop() {
 	}
 };
+var readAsDataURL = (file, callback) => {
+	reader = new FileReader();
+	reader.onload = (ev) => {
+		callback (ev.target.result, file);
+	}
+
+	reader.readAsDataURL(file);
+}
