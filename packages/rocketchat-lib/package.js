@@ -11,7 +11,8 @@ Npm.depends({
 	'node-dogstatsd': '0.0.6',
 	'localforage': '1.4.2',
 	'lokijs': '1.4.1',
-	'bugsnag': '1.8.0'
+	'bugsnag': '1.8.0',
+	'prom-client': '7.0.1'
 });
 
 Package.onUse(function(api) {
@@ -62,6 +63,7 @@ Package.onUse(function(api) {
 	api.addFiles('lib/MessageTypes.coffee');
 
 	api.addFiles('server/lib/bugsnag.js', 'server');
+	api.addFiles('server/lib/metrics.js', 'server');
 
 	api.addFiles('server/lib/RateLimiter.coffee', 'server');
 
@@ -119,6 +121,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/methods/addOAuthService.coffee', 'server');
 	api.addFiles('server/methods/refreshOAuthService.js', 'server');
 	api.addFiles('server/methods/addUserToRoom.coffee', 'server');
+	api.addFiles('server/methods/addUsersToRoom.js', 'server');
 	api.addFiles('server/methods/archiveRoom.coffee', 'server');
 	api.addFiles('server/methods/blockUser.js', 'server');
 	api.addFiles('server/methods/checkRegistrationSecretURL.coffee', 'server');

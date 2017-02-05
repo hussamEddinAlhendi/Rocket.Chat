@@ -32,6 +32,9 @@ RocketChat.settings.addGroup('FileUpload', function() {
 		}, {
 			key: 'FileSystem',
 			i18nLabel: 'FileSystem'
+		}, {
+			key: 'CustomAPI',
+			i18nLabel: 'CustomAPI'
 		}],
 		public: true
 	});
@@ -110,5 +113,15 @@ RocketChat.settings.addGroup('FileUpload', function() {
 	this.add('FileUpload_Enabled_Direct', true, {
 		type: 'boolean',
 		public: true
+	});
+	
+	this.section('CustomAPI', function() {
+		this.add('API', '', {
+			type: 'string',
+			enableQuery: {
+				_id: 'FileUpload_Storage_Type',
+				value: 'CustomAPI'
+			}
+		});
 	});
 });

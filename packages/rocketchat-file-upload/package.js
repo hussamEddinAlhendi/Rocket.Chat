@@ -30,6 +30,7 @@ Package.onUse(function(api) {
 	api.addFiles('client/lib/fileUploadHandler.js', 'client');
 	api.addFiles('client/lib/FileUploadAmazonS3.js', 'client');
 	api.addFiles('client/lib/FileUploadGridFS.js', 'client');
+	api.addFiles('client/lib/FileUploadCustomAPI.js', 'client');
 
 	api.addFiles('server/lib/FileUpload.js', 'server');
 	api.addFiles('server/lib/requests.js', 'server');
